@@ -1,0 +1,1 @@
+This project is an authentication system designed to securely manage user registration, login, logout, password management, and user authorization. It provides a reliable way to protect user accounts and application resources while keeping authentication simple, secure, and scalable.
