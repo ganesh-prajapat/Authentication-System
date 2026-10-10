@@ -1,10 +1,10 @@
-import React from "react";
-
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
 const App = () => {
   return (
-    <div className="text-red-800 text-5xl flex justify-center items-center h-screen">
-      <span>Authentication System</span>
-    </div>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 };
 

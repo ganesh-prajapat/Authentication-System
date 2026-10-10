@@ -1,23 +1,29 @@
 import express from "express";
 import cors from "cors";
-import 'dotenv/config';
+import "dotenv/config";
 import cookieParser from "cookie-parser";
-import connectDB from "./config/mongodb.js"
+import connectDB from "./config/mongodb.js";
 import authRouter from "./routes/authRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({credentials : true}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
-app.use("/auth" , authRouter);
+app.use("/auth", authRouter);
+app.use("/user", userRouter);
 
-app.get("/" , (req,res) =>{
+app.get("/", (req, res) => {
   res.send("Hello From the server");
-})
-
+});
 
 const startServer = async () => {
   try {
