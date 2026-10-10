@@ -1,10 +1,14 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
 import FormInput from "./components/FormInput";
+import  { signup} from "./apis/UserRegisterApi"
+import { toast } from "react-toastify"
 
 export default function Signup() {
+  const navigate = useNavigate();
+  const [Loading , setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,10 +24,29 @@ export default function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Signup form data:", formData);
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const data = await signup(formData);
+
+    if (data.success === false) {
+      toast.error( data.message|| "SignUp failed");
+      throw new Error(data.message || "Signup failed");
+      
+    }
+
+    navigate("/login", {
+      state: {
+        message: data.message || "Registration successful. Please log in.",
+      },
+    });
+    toast.success("Registration successful. Please log in.")
+  } catch (err) {
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <main className="relative flex h-screen items-center justify-center
@@ -77,13 +100,14 @@ export default function Signup() {
 
           <button
             type="submit"
+            disabled={Loading}
             className="group flex w-full items-center justify-center gap-2
               rounded-xl bg-indigo-500 px-4 py-3.5 text-sm font-semibold
               text-white shadow-lg shadow-indigo-600/20 transition
               hover:-translate-y-0.5 hover:bg-indigo-700
               focus:outline-none focus:ring-4 focus:ring-indigo-500/20"
           >
-            Create account
+           {Loading ? "Creating account..." : "Create account"}
             <ArrowRight size={17}
               className="transition-transform group-hover:translate-x-1" />
           </button>
